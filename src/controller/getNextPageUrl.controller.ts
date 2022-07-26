@@ -4,12 +4,13 @@ import HttpException from '../utils/exceptions/http.exception';
 import GetNextPageService from '../service/getNextPageUrl.service'
 
 class GetNextPageController implements Controller {
-    public path = '/posts';
+    public path = '/next';
     public router = Router();
     private GetNextPageService = new GetNextPageService();
 
     constructor() {
         this.initialiseRoutes();
+        
     }
 
     private initialiseRoutes(): void {
