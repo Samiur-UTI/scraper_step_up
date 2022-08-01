@@ -36,7 +36,6 @@ export default class GetNextPageService {
                     })
                 }
             }
-            console.log(allPages)
             return allPages
         }
     }
