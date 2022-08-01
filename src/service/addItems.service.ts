@@ -4,13 +4,14 @@ import HttpException from "../utils/exceptions/http.exception";
 import GeneralService from "./general.service";
 import { children } from "cheerio/lib/api/traversing";
 import { attr } from "cheerio/lib/api/attributes";
+import {Ads} from '../utils/interfaces/entities.interface'
 
 export default class AddItemsService {
     private pageIndex: number;
     private clientService = new ClientService()
     private generalService = new GeneralService()
 
-    async addItems(index: number) {
+    async addItems(index: number): Promise<string | Ads[]> {
         const body = await this.clientService.getHtml(process.env.INITIAL as string,index)
         if (body instanceof HttpException) {
             return body.message
