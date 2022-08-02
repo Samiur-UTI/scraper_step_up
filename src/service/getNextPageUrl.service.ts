@@ -10,7 +10,7 @@ export default class GetNextPageService {
     private clientService = new ClientService()
     private generalService = new GeneralService()
 
-    async getUrl(index: number) {
+    async getUrl(index?: number): Promise<string | {page: number;url: string;}[]> {
         const body = await this.clientService.getHtml(process.env.INITIAL as string)
         if (body instanceof HttpException) {
             return body.message

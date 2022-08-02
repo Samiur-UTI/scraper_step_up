@@ -32,7 +32,7 @@ class TotalAdsController implements Controller {
 
             res.status(201).json({ number });
         } catch (error) {
-            next(new HttpException(400, 'Cannot create post'));
+            next(new HttpException(400, 'Cannot find ads'));
         }
     };
 }

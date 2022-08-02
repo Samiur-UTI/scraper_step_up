@@ -29,11 +29,11 @@ class GetNextPageController implements Controller {
         try {
             const { index } = req.params;
 
-            const post = await this.GetNextPageService.getUrl(Number(index));
+            const ads = await this.GetNextPageService.getUrl(Number(index));
 
-            res.status(201).json({ post });
+            res.status(201).json({ ads });
         } catch (error) {
-            next(new HttpException(400, 'Cannot create post'));
+            next(new HttpException(400, 'Cannot find ads'));
         }
     };
 }

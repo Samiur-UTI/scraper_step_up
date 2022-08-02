@@ -23,7 +23,6 @@ export default class ScrapeTruckItemService {
                 return this.getDetail(body as unknown as string)
             }
         }))
-        console.log(allAds)
         return allAds
     }
     async getDetail(html: string): Promise<AdDetails> {

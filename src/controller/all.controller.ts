@@ -1,12 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Controller from '../utils/interfaces/controller.interface';
 import HttpException from '../utils/exceptions/http.exception';
-import AddItemsService from '../service/addItems.service';
+import AllService from '../service/all.service';
 
-class AddItemsController implements Controller {
-    public path = '/additem';
+class AllController implements Controller {
+    public path = '/all';
     public router = Router();
-    private addItemService = new AddItemsService();
+    private allService = new AllService();
 
     constructor() {
         this.initialiseRoutes();
@@ -28,13 +28,13 @@ class AddItemsController implements Controller {
         try {
             const { index } = req.query;
 
-            const ads = await this.addItemService.addItems(Number(index));
+            const ads = await this.allService.everyAds();
 
             res.status(201).json({ ads });
         } catch (error) {
-            next(new HttpException(400, 'Cannot fetch ads'));
+            next(new HttpException(400, 'Cannot find ads'));
         }
     };
 }
 
-export default AddItemsController;
+export default AllController;
