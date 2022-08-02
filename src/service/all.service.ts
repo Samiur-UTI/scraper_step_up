@@ -1,7 +1,3 @@
-import ClientService from "./client.service";
-import Cheerio from 'cheerio'
-import HttpException from "../utils/exceptions/http.exception";
-import GeneralService from "./general.service";
 import GetNextPageService from "./getNextPageUrl.service";
 import AddItemsService from "./addItems.service";
 import ScrapeTruckItemService from "./scrapeTruckItem.service";
@@ -19,6 +15,17 @@ export default class AllService {
         const allAdsOnAllPages : any = await Promise.all( pageIndexes.map(async (page) => {
             return this.addItemsService.addItems(Number(page))
         }))
+        // const delay = 40000;
+        // Promise.delay = function (t, val) {
+        //     return new Promise(resolve => {
+        //         setTimeout(resolve.bind(null, val), t);
+        //     });
+        // }
+        // Promise.raceAll = function (promises, timeoutTime, timeoutVal) {
+        //     return Promise.all(promises.map(p => {
+        //         return Promise.race([p, Promise.delay(timeoutTime, timeoutVal)])
+        //     }));
+        // }
         const allInAll = await Promise.all(
             allAdsOnAllPages.map( async (page: Ads[]) =>{
                 return await this.scrapeTruckItem.getDetails(page)
