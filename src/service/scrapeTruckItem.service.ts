@@ -13,7 +13,7 @@ export default class ScrapeTruckItemService {
     private pageIndex: number;
     private clientService = new ClientService()
 
-    async getDetails(ads: Ads[] ) :Promise<string | void> {
+    async getDetails(ads: Ads[] ) :Promise<string | AdDetails> {
         const exp = ads[0].url
         const body = await this.clientService.getHtml(exp as string)
         if(body instanceof HttpException){
@@ -29,6 +29,10 @@ export default class ScrapeTruckItemService {
                 power:""
 
             }
+
+            //The data is provided in polish, so had to do some manual translation and store them in an object to properly parse the data
+
+            //Production date, milage and power
             const dummyArr: Array<string> = []
             $('.offer-params__list').children().each((i,el) => {
                 let item = String($(el).text()).trim().split("\n")
@@ -45,7 +49,19 @@ export default class ScrapeTruckItemService {
                     
                 }
             }
+
+            //Price, id and register date
+            const priceDirty = $(".offer-price__number").text().trim().split("\n")
+            const priceCleaned = priceDirty.map( el => el.replace(/\s/g, ""))
+            details["price"] = priceCleaned[0]
+            const idDirty = $("#ad_id").text()
+            const idArr =  idDirty.split("")
+            const freshId = idArr.splice(0,idArr.length/2).join("")
+            details["id"] = freshId
+            const date = ($(".offer-meta__value").first().text()).trim().split("\n")
+            details["registration_date"] = date[0]
             
+            return details
         }
     }
 }
