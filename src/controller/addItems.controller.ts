@@ -1,16 +1,15 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Controller from '../utils/interfaces/controller.interface';
 import HttpException from '../utils/exceptions/http.exception';
-import GetNextPageService from '../service/getNextPageUrl.service'
+import AddItemsService from '../service/addItems.service';
 
-class GetNextPageController implements Controller {
-    public path = '/next';
+class AddItemsController implements Controller {
+    public path = '/additem';
     public router = Router();
-    private GetNextPageService = new GetNextPageService();
+    private addItemService = new AddItemsService();
 
     constructor() {
         this.initialiseRoutes();
-        
     }
 
     private initialiseRoutes(): void {
@@ -27,15 +26,15 @@ class GetNextPageController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const { index } = req.params;
+            const { index } = req.query;
 
-            const ads = await this.GetNextPageService.getUrl(Number(index));
+            const ads = await this.addItemService.addItems(Number(index));
 
             res.status(201).json({ ads });
         } catch (error) {
-            next(new HttpException(400, 'Cannot find ads'));
+            next(new HttpException(400, 'Cannot fetch ads'));
         }
     };
 }
 
-export default GetNextPageController;
+export default AddItemsController;

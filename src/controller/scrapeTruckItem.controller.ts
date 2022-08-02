@@ -1,12 +1,15 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Controller from '../utils/interfaces/controller.interface';
 import HttpException from '../utils/exceptions/http.exception';
-import GetNextPageService from '../service/getNextPageUrl.service'
+import ScrapeTruckItemService from '../service/scrapeTruckItem.service';
+import AddItemsService from '../service/addItems.service';
+import {Ads} from '../utils/interfaces/entities.interface'
 
-class GetNextPageController implements Controller {
-    public path = '/next';
+class ScrapeTruckItemController implements Controller {
+    public path = '/scrape';
     public router = Router();
-    private GetNextPageService = new GetNextPageService();
+    private scrapeTruckItemService = new ScrapeTruckItemService();
+    private addItemService = new AddItemsService()
 
     constructor() {
         this.initialiseRoutes();
@@ -27,15 +30,17 @@ class GetNextPageController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const { index } = req.params;
+            const { index } = req.query;
 
-            const ads = await this.GetNextPageService.getUrl(Number(index));
+            const allAds = await this.addItemService.addItems(Number(index))
 
-            res.status(201).json({ ads });
+            const post = await this.scrapeTruckItemService.getDetails(allAds as Ads[]);
+
+            res.status(201).json({ post });
         } catch (error) {
             next(new HttpException(400, 'Cannot find ads'));
         }
     };
 }
 
-export default GetNextPageController;
+export default ScrapeTruckItemController;

@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import Controller from './utils/interfaces/controller.interface'
 import ErrorMiddleware from './middleware/error.middleware';
+import * as dotenv from "dotenv";
 
 class App {
     public express: Application;

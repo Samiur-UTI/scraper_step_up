@@ -1,16 +1,15 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Controller from '../utils/interfaces/controller.interface';
 import HttpException from '../utils/exceptions/http.exception';
-import GetNextPageService from '../service/getNextPageUrl.service'
+import AllService from '../service/all.service';
 
-class GetNextPageController implements Controller {
-    public path = '/next';
+class AllController implements Controller {
+    public path = '/all';
     public router = Router();
-    private GetNextPageService = new GetNextPageService();
+    private allService = new AllService();
 
     constructor() {
         this.initialiseRoutes();
-        
     }
 
     private initialiseRoutes(): void {
@@ -27,9 +26,9 @@ class GetNextPageController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            const { index } = req.params;
+            const { index } = req.query;
 
-            const ads = await this.GetNextPageService.getUrl(Number(index));
+            const ads = await this.allService.everyAds();
 
             res.status(201).json({ ads });
         } catch (error) {
@@ -38,4 +37,4 @@ class GetNextPageController implements Controller {
     };
 }
 
-export default GetNextPageController;
+export default AllController;
